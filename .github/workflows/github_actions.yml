@@ -24,5 +24,13 @@ jobs:
     needs: [Trigger-Github-Scan]
     if: failure()
     steps:
-      - name: Revert commit on failed scan
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Revert commit on failed scan due to failed scan
         run: echo "reverting commit ${GITHUB_SHA}"
+
+      - name: Initiating revert
+        run:  |
+          git reset HEAD^ --hard 
+          git push origin -f 
