@@ -7,4 +7,4 @@
 .*assembly: AssemblyVersion*
 .*assembly: AssemblyFileVersion*
 .*Version=*
-.*.github/workflows/*.yml
+.github/**.yml
