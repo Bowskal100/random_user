@@ -8,8 +8,6 @@ jobs:
       
       - name: Check out repository code
         uses: actions/checkout@v2
-        with: 
-          fetch-depth: 2
 
       - name: Preparing folder and file permissions
         run: |
@@ -28,7 +26,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-
+        with: 
+          fetch-depth: 2
       - name: Revert commit on failed scan due to failed scan
         run: echo "reverting commit ${GITHUB_SHA}"
 
