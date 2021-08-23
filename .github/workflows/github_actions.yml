@@ -5,14 +5,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      
       - name: Check out repository code
         uses: actions/checkout@v2
-
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-
-      - run: echo "🍏 This job's status is ${{ job.status }}."
 
       - name: Preparing folder and file permissions
         run: |
@@ -21,6 +16,13 @@ jobs:
           cp ./aws-git-secrets/git-secrets ${{ github.workspace }}
           ls -al ${{ github.workspace }}
           
-
       - name: Run Secret scan
         run: ./aws-git-secrets/scan-repo-linux-mac.sh
+
+  Revert-For-Failed-Scan:  
+    runs-on: ubuntu-20.04
+    needs: [Trigger-Github-Scan]
+    if: failure()
+    steps:
+      - name: Revert commit on failed scan
+        run: echo "reverting commit ${GITHUB_SHA}"
