@@ -20,7 +20,6 @@ jobs:
         run: ./aws-git-secrets/scan-repo-linux-mac.sh
 
   Revert-For-Failed-Scan:  
-    permissions:
     runs-on: ubuntu-20.04
     needs: [Trigger-Github-Scan]
     if: failure()
