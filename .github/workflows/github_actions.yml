@@ -1,0 +1,39 @@
+name: GitHub Actions
+on: [push, pull_request]
+jobs:
+  Trigger-Github-Scan:
+    runs-on: ubuntu-20.04
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Preparing folder and file permissions
+        run: |
+          chmod 700 ./aws-git-secrets/scan-repo-linux-mac.sh 
+          chmod 700 ./aws-git-secrets/git-secrets
+          cp ./aws-git-secrets/git-secrets ${{ github.workspace }}
+          ls -al ${{ github.workspace }}
+          
+      - name: Run Secret scan
+        run: ./aws-git-secrets/scan-repo-linux-mac.sh
+
+  Revert-For-Failed-Scan:  
+    runs-on: ubuntu-20.04
+    needs: [Trigger-Github-Scan]
+    if: failure()
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 2
+          token: ${{ secrets.GIT_ACTION_TOKEN }}
+
+      - name: Revert commit on failed scan due to failed scan
+        run: echo "reverting commit ${GITHUB_SHA}"
+
+      - name: Initiating revert
+        run:  |
+          git reset HEAD^ --hard 
+          git push origin -f 
