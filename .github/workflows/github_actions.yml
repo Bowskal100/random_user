@@ -14,8 +14,12 @@ jobs:
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-      - name: Setting file permissions
-        run: chmod 700 ./aws-git-secrets/scan-repo-linux-mac.sh 
+      - name: Preparing folder and file permissions
+        run: |
+          chmod 700 ./aws-git-secrets/scan-repo-linux-mac.sh 
+          chmod 700 ./aws-git-secrets/git-secrets
+          cp ./aws-git-secrets/git-secrets ${{ github.workspace }}
+          
 
       - name: Run Secret scan
         run: ./aws-git-secrets/scan-repo-linux-mac.sh
