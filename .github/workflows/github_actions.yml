@@ -19,6 +19,7 @@ jobs:
           chmod 700 ./aws-git-secrets/scan-repo-linux-mac.sh 
           chmod 700 ./aws-git-secrets/git-secrets
           cp ./aws-git-secrets/git-secrets ${{ github.workspace }}
+          ls ${{ github.workspace }}
           
 
       - name: Run Secret scan
