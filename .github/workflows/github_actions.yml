@@ -18,4 +18,4 @@ jobs:
         run: chmod 700 ./aws-git-secrets/scan-repo-linux-mac.sh 
 
       - name: Run Secret scan
-        run: cd ./aws-git-secrets && ./scan-repo-linux-mac.sh
+        run: ./aws-git-secrets/scan-repo-linux-mac.sh
